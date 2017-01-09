@@ -45,16 +45,32 @@ list(APPEND "-std=c++11 -ftree-vectorize")
 set(EIGEN_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/Eigen")
 include_directories(${EIGEN_INCLUDE_DIR})
 
+# Boost
+find_package(Boost 1.53.0 REQUIRED COMPONENTS chrono filesystem program_options system thread)
+add_library(boost INTERFACE)
+target_include_directories(boost INTERFACE ${Boost_INCLUDE_DIRS})
+target_link_libraries(boost INTERFACE ${Boost_LIBRARIES})
+
+# OpenCV
+find_package(OpenCV 3.0.0 REQUIRED)
+add_library(opencv INTERFACE)
+target_include_directories(opencv INTERFACE ${OpenCV_INCLUDE_DIRS})
+target_link_libraries(opencv INTERFACE ${OpenCV_LIBS})
+
 # modules
 add_subdirectory(modules)
 
 
 # make a dummy file for library
-cuda_add_library(CuCv
-    dummy.h)
+add_library(CuCv
+    dummy.cpp)
 
 target_include_directories(CuCv PUBLIC
     ${EIGEN_INCLUDE_DIR})
 
+set_property(TARGET CuCv PROPERTY CXX_STANDARD 11)
+
 target_link_libraries(CuCv
-    CuCvCore)
+    CuCvCore
+    boost
+    opencv)

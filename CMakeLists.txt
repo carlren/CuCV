@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.0 FATAL_ERROR)
 
+Project(CuCVApp)
+
 # modules
 add_subdirectory(CuCV)
 
