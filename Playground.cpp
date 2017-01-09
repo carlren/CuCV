@@ -2,6 +2,7 @@
 
 #include <base/Base.h>
 #include <LinearMemory.h>
+#include <TextureImage.h>
 
 #include <memory>
 
