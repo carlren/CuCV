@@ -10,6 +10,7 @@ using namespace std;
 
 int main(int argc, char** argv)
 {
+    
     CuCv::Mat3f mat3f(1,2,3,4,5,6,7,8,9);
     
     cout << mat3f << endl;
