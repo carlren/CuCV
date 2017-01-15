@@ -1,10 +1,10 @@
 #include <iostream>
-
-#include <base/Base.h>
-#include <LinearMemory.h>
-#include <TextureImage.h>
-
 #include <memory>
+
+#include "CuCV/Core.h"
+#include "CuCV/ImgProc.h"
+
+#include <opencv2/opencv.hpp>
 
 using namespace std;
 
@@ -33,6 +33,22 @@ int main(int argc, char** argv)
     cout << mat4f * 3 << endl;
     cout << mat4f *  b << endl << endl;
     cout << mat4f * mat4f << endl;
-        
+    
+    cv::Mat origin_mat = cv::imread("/home/carl/Work/CuCV/CuCV/data/SD_sea_world.JPG");
+    cv::cvtColor(origin_mat,origin_mat,cv::COLOR_BGR2BGRA);
+    
+    CuCv::TextureImage<uchar4> origin_gpu_image(origin_mat.cols, origin_mat.rows);
+    CuCv::TextureImage<uchar4> small_gpu_image(origin_mat.cols/3, origin_mat.rows/3);
+    
+    origin_gpu_image.loadData(origin_mat.data,CuCv::CPU_TO_GPU);
+    CuCv::resize(origin_gpu_image,small_gpu_image,origin_mat.cols/3, origin_mat.rows/3);
+    small_gpu_image.updateHostFromDevice();
+    cv::Mat small_mat(small_gpu_image.height(),small_gpu_image.width(),CV_8UC4,small_gpu_image.getPtrCPU());
+    
+    cv::imshow("origin",origin_mat);
+    cv::imshow("small",small_mat);
+    
+    cv::waitKey();
+    
     return 0;
 }
