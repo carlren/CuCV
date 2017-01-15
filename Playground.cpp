@@ -40,10 +40,19 @@ int main(int argc, char** argv)
     CuCv::TextureImage<uchar4> origin_gpu_image(origin_mat.cols, origin_mat.rows);
     CuCv::TextureImage<uchar4> small_gpu_image(origin_mat.cols/3, origin_mat.rows/3);
     
+    size_t start = cv::getCPUTickCount();
+    
     origin_gpu_image.loadData(origin_mat.data,CuCv::CPU_TO_GPU);
-    CuCv::resize(origin_gpu_image,small_gpu_image,origin_mat.cols/3, origin_mat.rows/3);
+    for (int i=0;i<200;i++) CuCv::resize(origin_gpu_image,small_gpu_image,origin_mat.cols/3, origin_mat.rows/3);
     small_gpu_image.updateHostFromDevice();
     cv::Mat small_mat(small_gpu_image.height(),small_gpu_image.width(),CV_8UC4,small_gpu_image.getPtrCPU());
+    
+    std::cout << "gpu resize take = " << (cv::getCPUTickCount() - start) / cv::getTickFrequency() * 5 << "ms" << std::endl;
+    
+    start = cv::getTickCount();
+    
+    for (int i=0;i<200;i++) cv::resize(origin_mat,small_mat,small_mat.size());
+    std::cout << "OpenCV resize take = " << (cv::getCPUTickCount() - start) / cv::getTickFrequency() * 5 << "ms" << std::endl;
     
     cv::imshow("origin",origin_mat);
     cv::imshow("small",small_mat);
