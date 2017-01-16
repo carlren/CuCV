@@ -89,6 +89,7 @@ gSLICr::segment(void * image_data)
     if (settings_._enforce_connectivity)
         enforceConnectivity();
     
+    index_image_.updateHostFromDevice();
     return index_image_;
 }
 
