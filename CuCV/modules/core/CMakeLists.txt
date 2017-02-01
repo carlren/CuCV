@@ -4,7 +4,9 @@ add_subdirectory(base)
 
 set(CORE_SRC
 LinearMemory.h
-TextureImage.h)
+TextureImage.h
+core.cpp
+)
 
 cuda_add_library(CuCvCore
     ${CORE_SRC})

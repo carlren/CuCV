@@ -6,7 +6,9 @@ VectorHelper.h
 Mat2.h
 Mat3.h
 Mat4.h
-Base.h)
+Base.h
+Base.cpp
+)
 
 target_link_libraries(CuCVBase
 cuda)

@@ -41,6 +41,10 @@ else()
     set(CUDA_HAVE_GPU FALSE CACHE BOOL "Whether CUDA-capable GPU is present")
 endif()
 
+if(APPLE)
+  set(CUDA_HOST_COMPILER /usr/bin/clang)
+endif(APPLE)
+
 list(APPEND "-std=c++11 -ftree-vectorize")
 
 # Eigen
